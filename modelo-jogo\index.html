@@ -1,48 +1,96 @@
-<!doctype html>
-<html lang="pt-BR" data-theme="light">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="color-scheme" content="light dark" />
-    <title>Modelo de Jogo — Jogos VR</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="app">
-      <header class="top">
-        <div>
-          <span class="kicker">Modelo</span>
-          <h1 id="title">Clique no Alvo</h1>
-          <p class="subtitle">Troque este jogo pelo seu. O contrato já está pronto.</p>
-        </div>
-        <button id="restart" class="btn" type="button">Reiniciar</button>
-      </header>
-
-      <main>
-        <div class="hud">
-          <span class="pill">Alvos: <strong id="score">0</strong>/<span id="total">10</span></span>
-          <span class="pill">Tempo: <strong id="timer">0,0s</strong></span>
-        </div>
-
-        <div id="board" class="board" aria-label="Área do jogo">
-          <p id="start-hint" class="start-hint">Clique no alvo para começar</p>
-        </div>
-      </main>
-
-      <footer class="bottom">
-        <p>Este é o arquivo <code>game.js</code>. Leia os comentários e adapte.</p>
-      </footer>
-    </div>
-
-    <div id="result" class="overlay" hidden>
-      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="result-title">
-        <div class="modal-icon" aria-hidden="true">🎯</div>
-        <h2 id="result-title">Muito bem!</h2>
-        <p id="result-text">Você concluiu o jogo.</p>
-        <button id="play-again" class="btn btn-primary full" type="button">Jogar de novo</button>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Papa-Livros — Biblioteca Mágica</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container-jogo" id="app">
+    <!-- Cabeçalho com título, tema e barra de informações -->
+    <header class="cabecalho">
+      <div class="titulo-grupo">
+        <span class="icone-titulo" aria-hidden="true">📚</span>
+        <h1>Papa-Livros</h1>
       </div>
-    </div>
+      <div class="controles-topo">
+        <button type="button" id="btn-tema" class="btn-secundario" aria-label="Alternar tema claro ou escuro">
+          🌙 Tema
+        </button>
+      </div>
+    </header>
 
-    <script src="game.js"></script>
-  </body>
+    <!-- Painel de status: rodada, vidas e pontos -->
+    <section class="painel-status" aria-label="Status da partida">
+      <div class="status-item">
+        <span class="rotulo">Rodada</span>
+        <strong id="texto-rodada">1 / 8</strong>
+      </div>
+      <div class="status-item">
+        <span class="rotulo">Vidas</span>
+        <strong id="texto-vidas" aria-label="3 vidas restantes">❤️❤️❤️</strong>
+      </div>
+      <div class="status-item">
+        <span class="rotulo">Pontos</span>
+        <strong id="texto-pontos">0</strong>
+      </div>
+    </section>
+
+    <!-- Missão atual da rodada -->
+    <section class="painel-missao" aria-live="polite">
+      <p id="texto-missao">Clique em <strong>Iniciar Jogo</strong> para entrar na biblioteca!</p>
+    </section>
+
+    <!-- Área principal do labirinto (Canvas) e telas sobrepostas -->
+    <section class="area-tabuleiro">
+      <canvas id="canvas-jogo" width="480" height="480" aria-label="Labirinto da biblioteca mágica"></canvas>
+
+      <!-- Tela inicial -->
+      <div id="tela-inicio" class="sobreposicao ativa">
+        <div class="cartao-modal">
+          <h2>Bem-vindo à Biblioteca Mágica!</h2>
+          <p>
+            Guie o <strong>Papa-Livros</strong> pelos corredores e coma apenas o livro que mostra a <strong>classe de palavra</strong> pedida no topo.
+          </p>
+          <ul class="lista-dicas">
+            <li><strong>Substantivo:</strong> nome de coisas, lugares ou seres (ex: <em>castelo</em>).</li>
+            <li><strong>Adjetivo:</strong> qualidade ou característica (ex: <em>mágico</em>).</li>
+            <li><strong>Verbo:</strong> ação ou estado (ex: <em>correr</em>).</li>
+          </ul>
+          <button type="button" id="btn-iniciar" class="btn-principal">Iniciar Jogo</button>
+        </div>
+      </div>
+
+      <!-- Tela de fim de jogo (Vitória ou Derrota) -->
+      <div id="tela-fim" class="sobreposicao" hidden>
+        <div class="cartao-modal">
+          <h2 id="titulo-fim">Fim de Jogo!</h2>
+          <p id="resumo-fim">Você completou a aventura.</p>
+          <p class="destaque-final">Pontuação final: <strong id="pontos-finais">0</strong></p>
+          <button type="button" id="btn-reiniciar" class="btn-principal">Jogar Novamente</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Caixa de explicação rápida após comer um livro -->
+    <section id="caixa-feedback" class="painel-feedback neutro" aria-live="assertive">
+      <p id="texto-feedback">Use as setas do teclado ou os botões abaixo para mover.</p>
+    </section>
+
+    <!-- Controles direcionais para celular e clique no computador -->
+    <nav class="controles-direcionais" aria-label="Controles de movimento">
+      <div class="linha-controle">
+        <button type="button" class="btn-seta" data-direcao="cima" aria-label="Mover para cima">⬆️</button>
+      </div>
+      <div class="linha-controle">
+        <button type="button" class="btn-seta" data-direcao="esquerda" aria-label="Mover para a esquerda">⬅️</button>
+        <button type="button" class="btn-seta" data-direcao="baixo" aria-label="Mover para baixo">⬇️</button>
+        <button type="button" class="btn-seta" data-direcao="direita" aria-label="Mover para a direita">➡️</button>
+      </div>
+    </nav>
+  </main>
+
+  <script src="game.js"></script>
+</body>
 </html>

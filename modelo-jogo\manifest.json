@@ -1,16 +1,16 @@
 {
-  "slug": "meu-jogo",
-  "title": "Nome do meu jogo",
-  "author": "Seu nome",
-  "authorClass": "Sua turma",
-  "discipline": "Matemática",
-  "grades": ["6º", "7º"],
-  "tags": ["palavra-chave", "outra-palavra"],
-  "description": "Uma frase curta que explica o que o jogo ensina.",
-  "instructions": "Como jogar, em uma ou duas frases.",
-  "duration": 5,
+  "slug": "papa-livros",
+  "title": "Papa-Livros",
+  "author": "Luna",
+  "authorClass": "9C",
+  "discipline": "Educação Digital",
+  "grades": ["6º ano", "7º ano", "8º ano", "9º ano"],
+  "tags": ["português", "classes de palavras", "substantivo", "adjetivo", "verbo", "labirinto"],
+  "description": "Guie o Papa-Livros pelos corredores de uma biblioteca mágica para comer os livros com as palavras da classe gramatical pedida em cada rodada.",
+  "instructions": "Use as setas do teclado (ou W, A, S, D) no computador, ou os botões direcionais na tela do celular, para andar pelo labirinto e comer o livro com a classe de palavra certa (substantivo, adjetivo ou verbo). Evite comer os livros errados para não perder suas 3 vidas!",
+  "duration": "2 a 4 minutos",
   "version": "1.0.0",
   "entry": "index.html",
   "cover": "cover.svg",
-  "createdAt": "2026-11-02"
+  "createdAt": "2026-11-24"
 }
